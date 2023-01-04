@@ -119,4 +119,163 @@ public class GoodPolynomial {
 time difference为: 4400
 > 解决问题方法的效率，跟算法的巧妙程度有关。
 
+## 1.3 应用
+计算最大子列和的不同算法
+
+- O(n^3)
+```java
+package com.datastructure;
+public class MaxSubseqSum1 {
+
+	public static int maxSubseqSum1(int[] a, int n) {
+
+		int thisSum, maxSum = 0;
+
+		for(int i = 0; i < n; i++) {
+			for(int j = i; j < n; j++) {
+				thisSum = 0;
+				for(int k = i; k <= j; k++) {
+					thisSum += a[k];
+				}
+				if(thisSum > maxSum) {
+					maxSum = thisSum;
+				}
+
+			}
+		}
+		return maxSum;
+	}
+
+	public static void main(String[] args) {
+		int a[] = new int[] {-1,2,3,-4,5};
+		int n = 5;
+		int max = maxSubseqSum1(a,n);
+		System.out.println(max);
+	}
+}
+```
+
+- O(n^2)
+```java
+package com.datastructure;
+public class MaxSubseqSum2 {
+
+	public static int maxSubseqSum2(int[] a, int n) {
+
+		int thisSum, maxSum = 0;
+		for(int i = 0; i < n; i++) {
+			thisSum = 0;
+			for(int j = i; j < n; j++) {
+				thisSum += a[j];
+			}
+			if(thisSum > maxSum) {
+				maxSum = thisSum;
+			}
+		}
+		return maxSum;
+	}
+
+	public static void main(String[] args) {
+		int a[] = new int[] {-1,2,3,-4,5};
+		int n = 5;
+		int max = maxSubseqSum2(a,n);
+		System.out.println(max);
+	}
+}
+```
+
+
+- O(nlogn)
+```java
+package com.datastructure;
+public class MaxSubseqSum3 {
+	
+	public static int max3(int a, int b, int c) {
+		
+		return a > b ? a > c ? a : c : b > c ? b : c;
+		
+	}
+	
+	public static int maxSubseqSum3(int[] list, int left, int right) {
+		
+		int maxLeftSum, maxRightSum, maxLeftBorderSum, maxRightBorderSum;
+		int leftBorderSum, rightBorderSum;
+		int center, i;
+		
+		if(left == right) {
+			if(list[left] > 0) {
+				return list[left];
+			}else {
+				return 0;
+			}
+		}
+		
+		center = (left + right) / 2;
+		
+		maxLeftSum = maxSubseqSum3(list, left, center);
+		maxRightSum = maxSubseqSum3(list, center + 1, right);
+		
+		maxLeftBorderSum = 0;
+		leftBorderSum = 0;
+		
+		for(i = center; i >= left; i--) {
+			leftBorderSum += list[i];
+			if(leftBorderSum > maxLeftBorderSum) {
+				maxLeftBorderSum = leftBorderSum;
+			}
+		}
+		
+		maxRightBorderSum = 0;
+		rightBorderSum = 0;
+		
+		for(i = center + 1; i <= right; i++) {
+			rightBorderSum += list[i];
+			if(rightBorderSum > maxRightBorderSum) {
+				maxRightBorderSum = rightBorderSum;
+			}
+		}
+		
+		return max3(maxLeftSum, maxRightSum, maxRightBorderSum+maxLeftBorderSum);
+	}
+	
+	public static void main(String[] args) {
+		
+		int a[] = new int[] {-1,2,3,-4,5};
+		int n = 5;
+		int max = maxSubseqSum3(a,0,n-1);
+		System.out.println(max);
+
+	}
+}
+```
+
+- O(n)
+```java
+package com.datastructure;
+public class MaxSubseqSum4 {
+
+	public static int maxSubseqSum4(int[] a, int n) {
+
+		int maxSum = 0, thisSum = 0;
+		for(int i = 0; i < n; i++) {
+			thisSum += a[i];
+			if(thisSum > maxSum) {
+				maxSum = thisSum;
+			}else if(thisSum < 0) {
+				thisSum = 0;
+			}
+		}
+		return maxSum;
+	}
+
+	public static void main(String[] args) {
+		int a[] = new int[] {-1,2,3,-4,5};
+		int n = 5;
+		int max = maxSubseqSum4(a,n);
+		System.out.println(max);
+	}
+}
+```
+
+
 
