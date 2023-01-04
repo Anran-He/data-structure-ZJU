@@ -277,5 +277,204 @@ public class MaxSubseqSum4 {
 }
 ```
 
+## 2.1 线性表及其表示
+### 什么是线性表
+Linear List: 由同类型数据元素构成有序序列的线性结构
+- 表中元素个数称为线性表的长度
+- 线性表中没有元素时，称为空表
+- 表起始位置称表头，表结束位置称表尾
+
+#### 线性表的顺序存储实现
+1. 初始化
+```java
+List<String> list1 = new ArrayList<String>();
+```
+2. 查找
+```java
+list1.add("morning");
+list1.add("afternoon");
+list1.add("evening");
+// built-in method
+System.out.println(list1.indexOf("evening"));
+// self-defined method
+public static int find(String s, ArrayList<String> l) {
+
+		int i = 0;
+		while(i < l.size() && l.get(i) != s) {
+			i++;
+		}
+		while(i >= l.size()){
+			return -1;
+		}
+
+		return i;
+	}
+```
+3. 插入
+```java
+// built-in method
+list1.add(1, "noon");
+// self-defiend method
+public static void insert(String s, int i, ArrayList<String> l) {
+
+		if(i < 0 || i > l.size() + 1 ) {
+			System.out.println("invalid index");
+		}
+
+		l.add(null);
+
+		for(int j = l.size() - 2; j >= i; j--) {
+			System.out.println(l.get(j));
+			l.set(j+1, l.get(j));
+		}
+
+		l.set(i, s);
+	}
+```
+
+4. 删除
+```java
+//built-in method
+list1.remove(2);
+// self-defined method
+public static void delete(int i, ArrayList<String> l) {
+  if(i < 0 || i > l.size()+1) {
+    System.out.println("invalid index");
+    return;
+  }
+
+  for(int j = i+1; j <= l.size()-1; j++) {
+    l.set(j-1, l.get(j));
+  }
+  l.remove(l.size()-1);
+}
+```
+
+#### 线性表的链式存储实现
+```java
+package com.datastructure;
+
+public class MyLinkedList {
+
+	Node head;
+
+	class Node{
+		int data;
+		Node next;
+
+		Node(int d){
+			data = d;
+			next = null;
+		}
+	}
+
+	//length
+	public int length(MyLinkedList ll) {
+		Node h = ll.head;
+		int i = 0;
+		while(h != null) {
+			h = h.next;
+			i++;
+		}
+		return i;
+	}
+
+	//add node at the front
+	public void push(int newData) {
+		Node newNode = new Node(newData);
+		newNode.next = head;
+		head = newNode;
+	}
+
+	//insertion
+	public void insert(Node exist, int newData) {
+
+		// check if existing node is null
+		if(exist == null) {
+			System.out.println("the given code cannot be null");
+			return;
+		}
+
+
+		// put newDate into a new node
+		Node newNode = new Node(newData);
+
+		newNode.next = exist.next;
+
+		exist.next = newNode;
+	}
+
+	//add node in the end
+	public void append(int newData) {
+		Node newNode = new Node(newData);
+
+		if(head == null) {
+			head = newNode;
+			return;
+		}
+
+		newNode.next = null;
+
+		Node last = head;
+		while(last.next != null) {
+			last = last.next;
+		}
+
+		last.next = newNode;
+
+	}
+
+	//find by index
+	public int findByIndex(int k, MyLinkedList ll) {
+		Node temp = ll.head;
+		int i = 0;
+		while(temp != null && i < k) {
+			temp = temp.next;
+			i++;
+		}
+		if(i == k) {
+			return temp.data;
+		}else return (Integer) null;
+	}
+
+	//find by value
+	public int findByValue(int d, MyLinkedList ll) {
+		Node temp = ll.head;
+		int i = 0;
+		while(temp != null && temp.data != d) {
+			temp = temp.next;
+			i++;
+		}
+		return i;
+	}
+
+	//delete
+	public void delete(int i) {
+		Node temp = head, prev = null;
+
+		if(temp != null && temp.data == i) {
+			head = temp.next;
+			return;
+		}
+
+		while(temp != null && temp.data != i) {
+			prev = temp;
+			temp = temp.next;
+		}
+
+		if(temp == null) {
+			return;
+		}
+
+		if(temp.data == i) {
+			prev.next = temp.next;
+		}
+	}
+
+}
+
+```
+
+
 
 
